@@ -1,20 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Jenakankurma AR Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindAR Test - Jenakankurma</title>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image.prod.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.3/dist/mindar-image-aframe.prod.js"></script>
     <style>
-        body { 
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            font-family: Arial;
             text-align: center;
-            padding: 50px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        #startButton {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .status {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .ar-container {
+            width: 100%;
+            height: 500px;
+            margin: 20px auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
     </style>
 </head>
 <body>
-    <h1>AR Test Page</h1>
-    <p>MindAR Implementation for Testing</p>
-    <p>Site is working!</p>
+    <div class="container">
+        <h1>MindAR Test - Jenakankurma</h1>
+        <p>Augmented Reality Testing Page</p>
+        
+        <button id="startButton">Start AR Camera</button>
+        <div class="status" id="status">Click button to start AR</div>
+        
+        <div class="ar-container">
+            <a-scene 
+                mindar-image 
+                embedded 
+                color-space="sRGB"
+                vr-mode-ui="enabled: false"
+                device-orientation-permission-ui="enabled: false">
+                
+                <a-assets>
+                    <a-asset-item id="model" src="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"></a-asset-item>
+                </a-assets>
+
+                <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+                <a-entity mindar-image-target="targetIndex: 0">
+                    <a-gltf-model 
+                        src="#model"
+                        position="0 0 0.1"
+                        scale="0.05 0.05 0.05"
+                        rotation="0 0 0"
+                        animation="property: rotation; to: 0 360 0; loop: true; dur: 5000">
+                    </a-gltf-model>
+                    
+                    <a-text 
+                        value="MindAR Works!"
+                        position="0 -0.2 0.1"
+                        color="white"
+                        align="center"
+                        scale="2 2 2">
+                    </a-text>
+                </a-entity>
+            </a-scene>
+        </div>
+        
+        <p>Point camera at your target image to see 3D model</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startButton = document.getElementById('startButton');
+            const status = document.getElementById('status');
+            const scene = document.querySelector('a-scene');
+            
+            startButton.addEventListener('click', function() {
+                const arSystem = scene.systems["mindar-image-system"];
+                arSystem.start();
+                
+                status.textContent = "AR started! Allow camera access and point at target image.";
+                startButton.style.display = 'none';
+                
+                scene.addEventListener("targetFound", event => {
+                    status.textContent = "Target found! 🎉";
+                });
+                
+                scene.addEventListener("targetLost", event => {
+                    status.textContent = "Target lost. Point camera at target image.";
+                });
+            });
+        });
+    </script>
 </body>
 </html>
