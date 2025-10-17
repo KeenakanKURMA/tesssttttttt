@@ -1,62 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>MindAR Test</title>
-
-    <!-- A-Frame & MindAR -->
+    <meta charset="utf-8">
+    <title>MindAR 4 Target Test</title>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-    <style>
-      body { margin: 0; overflow: hidden; }
-      #loading {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: sans-serif;
-        font-size: 20px;
-        color: #555;
-      }
-    </style>
   </head>
 
-  <body>
-    <div id="loading">Loading camera...</div>
-
+  <body style="margin: 0; overflow: hidden;">
     <a-scene
-      mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
-      embedded
+      mindar-image="imageTargetSrc: targets.mind;"
       color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights: true"
+      renderer="colorManagement: true, physicallyCorrectLights: true, logarithmicDepthBuffer: true;"
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false">
+      device-orientation-permission-ui="enabled: false"
+      embedded
+    >
 
-      <a-assets>
-        <!-- optional: preloading assets -->
-      </a-assets>
+      <!-- Kamera -->
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- Target pertama -->
+      <!-- Target 1 -->
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-box color="red" position="0 0 0" scale="0.5 0.5 0.5" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"></a-box>
+        <a-box position="0 0 0" scale="0.3 0.3 0.3" color="#FF4444"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"></a-box>
       </a-entity>
 
-      <!-- Target kedua -->
+      <!-- Target 2 -->
       <a-entity mindar-image-target="targetIndex: 1">
-        <a-sphere color="blue" position="0 0 0" scale="0.4 0.4 0.4" animation="property: rotation; to: 360 0 0; loop: true; dur: 3000"></a-sphere>
+        <a-sphere position="0 0 0" scale="0.3 0.3 0.3" color="#44FF44"
+          animation="property: rotation; to: 360 0 0; loop: true; dur: 4000"></a-sphere>
       </a-entity>
 
-      <a-camera position="0 0 0"></a-camera>
-    </a-scene>
+      <!-- Target 3 -->
+      <a-entity mindar-image-target="targetIndex: 2">
+        <a-cone position="0 0 0" scale="0.3 0.3 0.3" color="#4444FF"
+          animation="property: rotation; to: 0 0 360; loop: true; dur: 4000"></a-cone>
+      </a-entity>
 
-    <script>
-      window.addEventListener("load", () => {
-        document.querySelector("#loading").style.display = "none";
-      });
-    </script>
+      <!-- Target 4 -->
+      <a-entity mindar-image-target="targetIndex: 3">
+        <a-torus position="0 0 0" scale="0.25 0.25 0.25" color="#FFD700"
+          animation="property: rotation; to: 360 360 0; loop: true; dur: 4000"></a-torus>
+      </a-entity>
+
+    </a-scene>
   </body>
 </html>
